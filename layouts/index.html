@@ -23,16 +23,16 @@
 				<!-- Main -->
 					<section id="main">
 						<header>
-                            <span class="avatar"><img src="{{ .Site.BaseURL }}/images/avatar.jpg" alt="" /></span>
+                            <!--<span class="avatar"><img src="{{ .Site.BaseURL }}/images/avatar.jpg" alt="" /></span>-->
 							<h1>Pulsar</h1>
-							<p>Decentralized Verifiable Randomness</p>
+							<p>Verifiable Randomness. Rock-solid.</p>
 						</header>
 						<hr />
                         <div class="field">
-                            <p>randomness iframe here</p>
+                            <p><iframe src="http://127.0.0.1:3000/external/random"></iframe></p>
                         </div>
 						<ul class="actions">
-							<li><a href="#" class="button">Service Config</a></li>
+							<li><a href="{{ .Site.BaseURL }}/public.toml" class="button" download>Verification Config</a></li>
 					    </ul>
 						<ul class="actions">
 							<li><a href="https://eprint.iacr.org/2016/1067" class="button">Research Paper</a></li>
@@ -42,7 +42,7 @@
 				<!-- Footer -->
 					<footer id="footer">
 						<ul class="copyright">
-                            <li>With <span class="icon fa-heart"></span> by <a href="http://dedis.epfl.ch">dedis.epfl.ch</a></li>
+                            <li>Created by <a href="http://dedis.epfl.ch">dedis.epfl.ch</a> with <span class="icon fa-heart"></span> </li>
                             <li>Design by <a href="http://html5up.net">HTML5 UP</a></li>
                             <li>Image by <a href="https://unsplash.com/photos/IEHPDNk2-8w">Unsplash</a></li>
 						</ul>
