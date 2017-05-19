@@ -1,4 +1,4 @@
-DEST=epfl-pulsar:/var/www/html/
+DEST=epfl-pulsar:~/www/
 SRC=public/
 
 server:
@@ -8,5 +8,5 @@ build:
 	hugo
 
 deploy:
-	rsync -Paivz --delete $(SRC) $(DEST)
+	rsync -Paivz $(SRC) $(DEST)
 
