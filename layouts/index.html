@@ -42,40 +42,41 @@
                     autoUpdate = true;
                     $("#rand_latest").attr('style', "background-color: #aaffaa");
                 }
-                console.log("Getting block: " + fetching);
+                <!--console.log("Getting block: " + fetching);-->
                 rm = CothorityProtobuf.createRandomMessage(fetching);
 
                 var wsrh = new WebSocket("wss://pulsar.dedis.ch:9000/RandHound/RandRequest");
                 wsrh.binaryType = 'arraybuffer';
                 <!--var wsrh = new WebSocket("ws://localhost:7003/RandHound/RandRequest");-->
                 wsrh.onopen = function(event){
-                    console.log("Sending");
+                    <!--console.log("Sending");-->
                     wsrh.send(rm);
                 }
                 wsrh.onmessage = function(event){
-                    console.log(event);
+                    <!--console.log(event);-->
                     reply = CothorityProtobuf.decodeRandomResponse(event.data);
-                    console.log("Received: " + reply);
-                    console.log(reply);
+                    <!--console.log("Received: " + reply);-->
+                    <!--console.log(reply);-->
                     $("#rand_index").text(reply.index);
                     $("#rand_time").text(new Date(reply.T.time/1000000).toString());
                     r = buf2hex(reply.R);
                     $("#rand_value").html("<pre>  " + r.slice(0, 32) + "<br/>  " +
                         r.slice(32, 64) + "</pre>");
                     current = reply.index;
+                    console.log("Got block: " + reply);
                 }
                 wsrh.onerror = function(event){
-                    console.log("non-existent block");
+                    <!--console.log("non-existent block");-->
                     block = 0;
                 }
             }
 
             $(function() {
-                console.log( "ready!" );
+                <!--console.log( "ready!" );-->
                 getBlock(0);
                 setInterval(function(){
                     if ( autoUpdate ){
-                        console.log("automatically getting block");
+                        <!--console.log("automatically getting block");-->
                         getBlock(0);
                     }
                 }, 30000);
@@ -96,14 +97,7 @@
 						</header>
 						<hr />
                         <div class="box">
-                            <h2>Latest Random Value</h2>
-                        </div>
-                       <div class="field">
-                           <iframe src="https://copulsar.dedis.ch/external/random"></iframe>
-                       </div>
-                        <hr/>
-                        <div class="box">
-                            <h2>Scroll through history</h2>
+                            <h2>Randomness History</h2>
                                 <table border="0">
                                     <tr>
                                         <td>Index:</td>
@@ -120,8 +114,8 @@
                                 </table>
                             <div class="center">
                             <span id="rand_prev" onclick="getBlock(-1);" style="background-color: #ffaaaa;">Previous</span>
-                            <span id="rand_latest" onclick="getBlock(0);" style="background-color: #ffaaaa;">Latest</span>
                             <span id="rand_next" onclick="getBlock(1);" style="background-color: #ffaaaa;">Next</span>
+                                <span id="rand_latest" onclick="getBlock(0);" style="background-color: #ffaaaa;">Latest</span>
                             </div>
                         </div>
 						<hr />
