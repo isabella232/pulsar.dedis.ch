@@ -7,6 +7,6 @@ server:
 build:
 	hugo
 
-deploy:
+deploy: build
 	rsync -Paivz $(SRC) $(DEST)
 

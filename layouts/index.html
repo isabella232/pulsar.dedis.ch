@@ -60,7 +60,8 @@
                     $("#rand_index").text(reply.index);
                     $("#rand_time").text(new Date(reply.T.time/1000000).toString());
                     r = buf2hex(reply.R);
-                    $("#rand_value").html(r.slice(0, 32) + "<br/>" + r.slice(32, 64));
+                    $("#rand_value").html("<pre>  " + r.slice(0, 32) + "<br/>  " +
+                        r.slice(32, 64) + "</pre>");
                     current = reply.index;
                 }
                 wsrh.onerror = function(event){
