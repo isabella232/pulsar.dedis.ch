@@ -19,26 +19,68 @@
         <script src="{{ .Site.BaseURL }}/js/bundle.js"></script>
         <noscript><link rel="stylesheet" href="{{ .Site.BaseURL }}/css/noscript.css" /></noscript>
         <script>
-            var block = 0;
+            var autoUpdate = true;
+            var current = 0;
             var addr = "copulsar.dedis.ch:9003";
 
-            function getBlock(b){
-                if ( b != 0 ){
-                    block += b;
-                    if ( block < 1 ){
-                        block = 1;
-                    }
-                } else {
-                    block = 10;
-                }
-                console.log("Getting block" + block);
-
-                $("#rand_index").text(block);
-                $("#rand_time").text("now");
-                $("#rand_value").text("4 - honestly");
+            // https://stackoverflow.com/questions/40031688/javascript-arraybuffer-to-hex
+            function buf2hex(buffer) { // buffer is an ArrayBuffer
+                return Array.prototype.map.call(new Uint8Array(buffer), x => ('00' + x.toString(16)).slice(-2)).join('');
             }
+
+            function getBlock(b){
+                var fetching = current;
+                if ( b != 0 ){
+                    fetching += b;
+                    if ( fetching < 1 ){
+                        fetching = 1;
+                    }
+                    autoUpdate = false;
+                    $("#rand_latest").attr('style', "background-color: #ffaaaa");
+                } else {
+                    fetching = 0;
+                    autoUpdate = true;
+                    $("#rand_latest").attr('style', "background-color: #aaffaa");
+                }
+                console.log("Getting block: " + fetching);
+                rm = CothorityProtobuf.createRandomMessage(fetching);
+
+                var wsrh = new WebSocket("wss://pulsar.dedis.ch:9000/RandHound/RandRequest");
+                wsrh.binaryType = 'arraybuffer';
+                <!--var wsrh = new WebSocket("ws://localhost:7003/RandHound/RandRequest");-->
+                wsrh.onopen = function(event){
+                    console.log("Sending");
+                    wsrh.send(rm);
+                }
+                wsrh.onmessage = function(event){
+                    console.log(event);
+                    reply = CothorityProtobuf.decodeRandomResponse(event.data);
+                    console.log("Received: " + reply);
+                    console.log(reply);
+                    $("#rand_index").text(reply.index);
+                    $("#rand_time").text(new Date(reply.T.time/1000000).toString());
+                    r = buf2hex(reply.R);
+                    $("#rand_value").html(r.slice(0, 32) + "<br/>" + r.slice(32, 64));
+                    current = reply.index;
+                }
+                wsrh.onerror = function(event){
+                    console.log("non-existent block");
+                    block = 0;
+                }
+            }
+
+            $(function() {
+                console.log( "ready!" );
+                getBlock(0);
+                setInterval(function(){
+                    if ( autoUpdate ){
+                        console.log("automatically getting block");
+                        getBlock(0);
+                    }
+                }, 3000);
+            });
         </script>
-	</head>
+    </head>
 	<body class="is-loading">
 
 		<!-- Wrapper -->
@@ -61,9 +103,20 @@
                         <hr/>
                         <div class="box">
                             <h2>Scroll through history</h2>
-                                Index: <span id="rand_index"></span><br/>
-                                Time: <span id="rand_time"></span><br/>
-                                Value: <span id="rand_value"></span><br/>
+                                <table border="0">
+                                    <tr>
+                                        <td>Index:</td>
+                                        <td id="rand_index"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Time:</td>
+                                        <td id="rand_time"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Value:</td>
+                                        <td id="rand_value"></td>
+                                    </tr>
+                                </table>
                             <div class="center">
                             <span id="rand_prev" onclick="getBlock(-1);" style="background-color: #ffaaaa;">Previous</span>
                             <span id="rand_latest" onclick="getBlock(0);" style="background-color: #ffaaaa;">Latest</span>
