@@ -14,7 +14,30 @@
         <link rel="stylesheet" href="{{ .Site.BaseURL }}/css/custom.css" />
         <!--[if lte IE 9]><link rel="stylesheet" href="{{ .Site.BaseURL }}/css/ie9.css" /><![endif]-->
 		<!--[if lte IE 8]><link rel="stylesheet" href="{{ .Site.BaseURL }}/css/ie8.css" /><![endif]-->
+        <script src="{{ .Site.BaseURL }}/js/jquery.min.js"></script>
+        <script src="{{ .Site.BaseURL }}/js/protobuf.min.js"></script>
+        <script src="{{ .Site.BaseURL }}/js/bundle.js"></script>
         <noscript><link rel="stylesheet" href="{{ .Site.BaseURL }}/css/noscript.css" /></noscript>
+        <script>
+            var block = 0;
+            var addr = "copulsar.dedis.ch:9003";
+
+            function getBlock(b){
+                if ( b != 0 ){
+                    block += b;
+                    if ( block < 1 ){
+                        block = 1;
+                    }
+                } else {
+                    block = 10;
+                }
+                console.log("Getting block" + block);
+
+                $("#rand_index").text(block);
+                $("#rand_time").text("now");
+                $("#rand_value").text("4 - honestly");
+            }
+        </script>
 	</head>
 	<body class="is-loading">
 
@@ -35,6 +58,18 @@
                        <div class="field">
                            <iframe src="https://copulsar.dedis.ch/external/random"></iframe>
                        </div>
+                        <hr/>
+                        <div class="box">
+                            <h2>Scroll through history</h2>
+                                Index: <span id="rand_index"></span><br/>
+                                Time: <span id="rand_time"></span><br/>
+                                Value: <span id="rand_value"></span><br/>
+                            <div class="center">
+                            <span id="rand_prev" onclick="getBlock(-1);" style="background-color: #ffaaaa;">Previous</span>
+                            <span id="rand_latest" onclick="getBlock(0);" style="background-color: #ffaaaa;">Latest</span>
+                            <span id="rand_next" onclick="getBlock(1);" style="background-color: #ffaaaa;">Next</span>
+                            </div>
+                        </div>
 						<hr />
                         <div class="box">
                             <h2>Randomness Retrieval and Verification</h2>
