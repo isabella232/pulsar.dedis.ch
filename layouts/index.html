@@ -63,7 +63,7 @@
                     $("#rand_value").html("<pre>  " + r.slice(0, 32) + "<br/>  " +
                         r.slice(32, 64) + "</pre>");
                     current = reply.index;
-                    console.log("Got block: " + reply);
+                    console.log("Got block: " + current);
                 }
                 wsrh.onerror = function(event){
                     <!--console.log("non-existent block");-->
