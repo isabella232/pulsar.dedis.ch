@@ -60,7 +60,7 @@
                     <!--console.log(reply);-->
                     $("#rand_index").text(reply.index);
                     var d = new Date(reply.T.time/1000000);
-                    $("#rand_time").text(moment(d).format('YYYY-MM-DD hh:mm:ssZZ', d));
+                    $("#rand_time").text(moment(d).format('YYYY-MM-DD HH:mm:ssZZ', d));
                     <!--$("#rand_time").text(d.toLocaleFormat("%Y-%m-%d %H:%M:%S"));-->
                     r = buf2hex(reply.R);
                     $("#rand_value").html("<pre><code>" + r.slice(0, 32) + "<br/>" +
