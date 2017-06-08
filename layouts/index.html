@@ -12,6 +12,7 @@
         <!--[if lte IE 8]><script src="{{ .Site.BaseURL }}/js/html5shiv.js"></script><![endif]-->
         <link rel="stylesheet" href="{{ .Site.BaseURL }}/css/main.css" />
         <link rel="stylesheet" href="{{ .Site.BaseURL }}/css/custom.css" />
+        <link rel="stylesheet" href="{{ .Site.BaseURL }}/css/progress.css" />
         <!--[if lte IE 9]><link rel="stylesheet" href="{{ .Site.BaseURL }}/css/ie9.css" /><![endif]-->
 		<!--[if lte IE 8]><link rel="stylesheet" href="{{ .Site.BaseURL }}/css/ie8.css" /><![endif]-->
         <script src="{{ .Site.BaseURL }}/js/protobuf.min.js"></script>
@@ -30,6 +31,7 @@
             }
 
             function getBlock(b){
+                $('#progress').removeClass('progress');
                 var fetching = current;
                 if ( b != 0 ){
                     fetching += b;
@@ -67,6 +69,9 @@
                         r.slice(32, 64) + "</code></pre>");
                     current = reply.index;
                     wsrh.close();
+                    if ( autoUpdate ){
+                        $('#progress').addClass('progress');
+                    }
                     console.log("Got block: " + current);
                 }
                 wsrh.onerror = function(event){
@@ -114,6 +119,7 @@
                                     <span id="rand_time"></span>
                                 </div>
                             </div>
+                            <div id="progressbar"><div id="progress" ><div id="pbaranim"></div></div></div>
                             <br>
                             <div class="center">
                                 <ul class="icons">
