@@ -37,6 +37,7 @@
 
 .disclaimer {
     font-size: 7pt;
+    max-width: 35em;
 }
 
 pre {
