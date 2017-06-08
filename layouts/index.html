@@ -46,7 +46,7 @@
                 <!--console.log("Getting block: " + fetching);-->
                 rm = CothorityProtobuf.createRandomMessage(fetching);
 
-                var wsrh = new WebSocket("wss://pulsar.dedis.ch:9000/RandHound/RandRequest");
+                wsrh = new WebSocket("wss://pulsar.dedis.ch:9000/RandHound/RandRequest");
                 wsrh.binaryType = 'arraybuffer';
                 <!--var wsrh = new WebSocket("ws://localhost:7003/RandHound/RandRequest");-->
                 wsrh.onopen = function(event){
@@ -60,12 +60,13 @@
                     <!--console.log(reply);-->
                     $("#rand_index").text(reply.index);
                     var d = new Date(reply.T.time/1000000);
-                    $("#rand_time").text(moment(d).format('YYYY-MM-DD hh:m:ssZZ', d));
+                    $("#rand_time").text(moment(d).format('YYYY-MM-DD hh:mm:ssZZ', d));
                     <!--$("#rand_time").text(d.toLocaleFormat("%Y-%m-%d %H:%M:%S"));-->
                     r = buf2hex(reply.R);
                     $("#rand_value").html("<pre><code>" + r.slice(0, 32) + "<br/>" +
                         r.slice(32, 64) + "</code></pre>");
                     current = reply.index;
+                    wsrh.close();
                     console.log("Got block: " + current);
                 }
                 wsrh.onerror = function(event){
