@@ -14,8 +14,9 @@
         <link rel="stylesheet" href="{{ .Site.BaseURL }}/css/custom.css" />
         <!--[if lte IE 9]><link rel="stylesheet" href="{{ .Site.BaseURL }}/css/ie9.css" /><![endif]-->
 		<!--[if lte IE 8]><link rel="stylesheet" href="{{ .Site.BaseURL }}/css/ie8.css" /><![endif]-->
-        <script src="{{ .Site.BaseURL }}/js/jquery.min.js"></script>
         <script src="{{ .Site.BaseURL }}/js/protobuf.min.js"></script>
+        <script src="{{ .Site.BaseURL }}/js/jquery.min.js"></script>
+        <script src="{{ .Site.BaseURL }}/js/moment.min.js"></script>
         <script src="{{ .Site.BaseURL }}/js/bundle.js"></script>
         <noscript><link rel="stylesheet" href="{{ .Site.BaseURL }}/css/noscript.css" /></noscript>
         <script>
@@ -58,7 +59,9 @@
                     <!--console.log("Received: " + reply);-->
                     <!--console.log(reply);-->
                     $("#rand_index").text(reply.index);
-                    $("#rand_time").text(new Date(reply.T.time/1000000).toString());
+                    var d = new Date(reply.T.time/1000000);
+                    $("#rand_time").text(moment(d).format('YYYY-MM-DD hh:m:ss', d));
+                    <!--$("#rand_time").text(d.toLocaleFormat("%Y-%m-%d %H:%M:%S"));-->
                     r = buf2hex(reply.R);
                     $("#rand_value").html("<pre><code>" + r.slice(0, 32) + "<br/>" +
                         r.slice(32, 64) + "</code></pre>");
