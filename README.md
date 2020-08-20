@@ -1,3 +1,5 @@
+⚠️ https://pulsar.dedis.ch has been discontinued. The project has now its own website and organization: https://drand.love/, https://github.com/drand.
+
 # Sources of the Pulsar Website
 See [https://pulsar.dedis.ch](https://pulsar.dedis.ch).
 
